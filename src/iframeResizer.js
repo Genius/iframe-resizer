@@ -44,7 +44,8 @@
 			initCallback              : function(){},
 			messageCallback           : function(){},
 			resizedCallback           : function(){}
-		};
+		},
+		watchedIFrames = [];
 
 	function addEventListener(obj,evt,func){
 		if ('addEventListener' in window){
@@ -141,7 +142,18 @@
 
 			var
 				origin     = event.origin,
-				remoteHost = messageData.iframe.src.split('/').slice(0,3).join('/');
+				remoteHost = messageData.iframe.src.split('/').slice(0,3).join('/'),
+				isFromWatchedIFrame = false;
+
+                        for (var i = 0; i < watchedIFrames.length; i++) {
+			    if (watchedIFrames[i] === messageData.iframe) {
+				isFromWatchedIFrame = true;
+			    }
+			}
+
+			if (!isFromWatchedIFrame) {
+			    return false;
+			}
 
 			if (settings.checkOrigin) {
 				log(' Checking connection is from: '+remoteHost);
@@ -371,6 +383,10 @@
 				':' + settings.tolerance;
 		}
 
+		function addToWatchedIFrames() {
+		    watchedIFrames.push(iframe);
+		}
+
 		function init(msg){
 			//We have to call trigger twice, as we can not be sure if all
 			//iframes have completed loading when this code runs. The
@@ -400,6 +416,7 @@
 		setScrolling();
 		setLimits();
 		setupBodyMarginValues();
+		addToWatchedIFrames();
 		init(createOutgoingMsg());
 	}
 
