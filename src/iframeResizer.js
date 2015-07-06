@@ -142,8 +142,7 @@
 
 			var
 				origin     = event.origin,
-				remoteHost = messageData.iframe.src.split('/').slice(0,3).join('/'),
-				isFromWatchedIFrame = false;
+				remoteHost = messageData.iframe.src.split('/').slice(0,3).join('/');
 
 			if (watchedIFrames.indexOf(messageData.iframe) === -1) {
 			    return false;
