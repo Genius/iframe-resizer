@@ -145,13 +145,7 @@
 				remoteHost = messageData.iframe.src.split('/').slice(0,3).join('/'),
 				isFromWatchedIFrame = false;
 
-                        for (var i = 0; i < watchedIFrames.length; i++) {
-			    if (watchedIFrames[i] === messageData.iframe) {
-				isFromWatchedIFrame = true;
-			    }
-			}
-
-			if (!isFromWatchedIFrame) {
+			if (watchedIFrames.indexOf(messageData.iframe) === -1) {
 			    return false;
 			}
 
